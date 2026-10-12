@@ -1,0 +1,32 @@
+version: '3.9'
+
+services:
+  pgvector:
+    image: pgvector/pgvector:0.8.1-pg18-trixie
+    container_name: pgvector-db-lovable
+    environment:
+      POSTGRES_DB: pgvector-test
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+    ports:
+      - "9010:5432"
+    volumes:
+      - pgvector-data:/var/lib/postgresql
+    restart: unless-stopped
+
+  minio:
+    image: chrislusf/seaweedfs:4.47
+    container_name: minio-lovable
+    command: "server -s3 -dir=/data -s3.port=9000 -s3.config=/etc/seaweed-s3-config.json -master.volumeSizeLimitMB=1024"
+    ports:
+      - "9050:9000"    # host:container — host side changed to avoid conflict
+      - "9333:9333"
+      - "8888:8888"
+    volumes:
+      - minio-data:/data
+      - ./seaweed-s3-config.json:/etc/seaweed-s3-config.json:ro
+    restart: unless-stopped
+
+volumes:
+  minio-data:
+  pgvector-data:
