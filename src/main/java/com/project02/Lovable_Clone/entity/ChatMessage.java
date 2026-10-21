@@ -1,5 +1,6 @@
 package com.project02.Lovable_Clone.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project02.Lovable_Clone.enums.MessageRole;
 import jakarta.persistence.*;
 import lombok.*;
@@ -10,7 +11,7 @@ import java.time.Instant;
 import java.util.List;
 
 @Entity
-@Table(name="chat_message")
+@Table(name="chat_messages")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -35,7 +36,7 @@ public class ChatMessage {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    MessageRole messageRole;
+    MessageRole role;
 
     @OneToMany(mappedBy = "chatMessage", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @OrderBy("sequenceOrder ASC")

@@ -2,6 +2,7 @@ package com.project02.Lovable_Clone.service.impl;
 
 import com.project02.Lovable_Clone.dto.project.FileContentResponse;
 import com.project02.Lovable_Clone.dto.project.FileNode;
+import com.project02.Lovable_Clone.dto.project.FileTreeResponse;
 import com.project02.Lovable_Clone.entity.Project;
 import com.project02.Lovable_Clone.entity.ProjectFile;
 import com.project02.Lovable_Clone.error.ResourceNotFoundException;
@@ -39,9 +40,10 @@ public class ProjectFileServiceImpl implements ProjectFileService {
     private String projectBucket;
 
     @Override
-    public List<FileNode> getFileTree(Long projectId) {
+    public FileTreeResponse getFileTree(Long projectId) {
         List<ProjectFile> projectFileList = projectFileRepository.findByProjectId(projectId);
-        return projectFileMapper.toListOfFileNode(projectFileList);
+        List<FileNode> projectFilesNodes =  projectFileMapper.toListOfFileNode(projectFileList);
+        return new FileTreeResponse(projectFilesNodes);
     }
 
     @Override

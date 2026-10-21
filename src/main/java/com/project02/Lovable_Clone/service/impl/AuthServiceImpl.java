@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
     public AuthResponse signup(SignupRequest request)
     {
         userRepository.findByUsername(request.username()).ifPresent(user -> {
-            throw new BadRequestException("User already exists with same username: " + request.name());
+            throw new BadRequestException("User already exists with same username: " + request.username());
         });
         User user = userMapper.toEntity(request);
         user.setPassword(passwordEncoder.encode(request.password()));
